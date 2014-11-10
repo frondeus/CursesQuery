@@ -15,7 +15,6 @@ Window::Window(Window& parent, int x, int y, int w, int h) :
 	pointer = derwin(bPointer,h-2,w-2,1,1);
 	makeBorder();
 }
-
 Window::~Window()
 {
     delwin(pointer);
@@ -24,12 +23,9 @@ Window::~Window()
 
 void Window::makeBorder()
 {
-	wborder(bPointer, ACS_VLINE, ACS_VLINE, ACS_HLINE, ACS_HLINE,
-			ACS_ULCORNER, ACS_URCORNER, ACS_LLCORNER, ACS_LRCORNER);
-
-
     box(bPointer,0,0);
     keypad(pointer, true);
+    nodelay(pointer, true);
 }
 
 Window& Window::Panel()
@@ -45,7 +41,7 @@ Window& Window::refresh()
 	return *this;
 }
 
-Window& Window::move(int x, int y)
+Window& Window::pos(int x, int y)
 {
 	wmove(pointer,y,x);
 	return *this;
@@ -57,7 +53,7 @@ Window& Window::wait(int delay)
 	return *this;
 }
 
-Window& Window::moveWindow(int x, int y)
+Window& Window::move(int x, int y)
 {
 	posX = x;
 	posY = y;

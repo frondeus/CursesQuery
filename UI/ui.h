@@ -1,15 +1,24 @@
 #pragma once
 #include <sstream>
 #include <functional>
+#include <stack>
 
 class UI
 {
 public:
 	char key;
+	enum class Layout
+	{
+		Vertical,
+		Horizontal
+	};
+
 
 	UI(Screen& screen);
 
 	UI& setWindow(Window& wnd);
+	UI& beginLayout(Layout l);
+	UI& endLayout();
 
 	void start();
 	void end();
@@ -21,14 +30,18 @@ protected:
 
 	Window& wnd();
 	void setFocus(int id);
+	void _startLayout();
+	void _endLayout();
 
 	Window* window;
-
+	std::stack<Layout> layout;
 
 	int idCount;
 	int focus;
+	int last;
 
 	bool nextKey;
+	bool previousKey;
 	bool clickKey;
 };
 

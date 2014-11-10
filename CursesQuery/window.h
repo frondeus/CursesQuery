@@ -27,6 +27,12 @@ enum class Color : short int
 	White = 7
 };
 
+enum class Direction
+{
+	Vertical,
+	Horizontal
+};
+
 class Window
 {
 public:
@@ -44,8 +50,8 @@ public:
 
 	Window& Panel();
 	Window& refresh();
-	Window& moveWindow(int x, int y);
 	Window& move(int x, int y);
+	Window& pos(int x, int y);
 	Window& wait(int delay);
 
 	//output
@@ -53,6 +59,7 @@ public:
 	Window& character(char c);
 	Window& string(std::string str);
 	Window& endl();
+	Window& line(Direction dir);
 
 	Window& clear();
 	Window& set(Attribute a);

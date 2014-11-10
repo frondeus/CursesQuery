@@ -33,6 +33,19 @@ Window& Window::endl()
 	waddch(pointer,'\n');
 	return *this;
 }
+
+Window& Window::line(Direction dir)
+{
+	if(dir == Direction::Horizontal)
+	{
+		whline(pointer, ACS_HLINE, 1000);
+	}
+	else
+	{
+		wvline(pointer,ACS_VLINE,height);
+	}
+	return *this;
+}
 //------------
 
 

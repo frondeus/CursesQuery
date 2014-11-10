@@ -4,7 +4,8 @@
 UI::UI(Screen& screen)
 {
 	window = &screen;
-	focus = 0;
+	focus = last = 0;
+	layout.push(Layout::Vertical);
 }
 
 UI& UI::setWindow(Window& wnd)
@@ -13,10 +14,24 @@ UI& UI::setWindow(Window& wnd)
 	return *this;
 }
 
+UI& UI::beginLayout(enum Layout l)
+{
+	layout.push(l);
+	return *this;
+}
+
+UI& UI::endLayout()
+{
+	layout.pop();
+	_endLayout();
+	return *this;
+}
+
 void UI::start()
 {
 	idCount = 0;
-	nextKey = (key == 5);
+	nextKey = (key == 5) || (key == 2);
+	previousKey = (key == 4) || (key == 3);
 	clickKey = (key == 10);
 
 }
@@ -24,8 +39,10 @@ void UI::start()
 void UI::end()
 {
 	key = 0;
-	if(focus != 0)
+	//if(focus != 0)
+	wnd().wait(5);
 		wnd().get(key);
+	if(key == ERR) key = 0;
 }
 
 Window& UI::wnd()
@@ -37,11 +54,20 @@ void UI::setFocus(int id)
 {
 	if(focus == 0)
 		focus = id;
-	if(focus == id && nextKey)
+	if(focus == id)
 	{
-		focus = 0;
-		nextKey = false;
+		if(nextKey)
+		{
+			focus = 0;
+			nextKey = false;
+		}
+		else if(previousKey)
+		{
+			focus = last;
+			previousKey = false;
+		}
 	}
+	last = id;
 }
 //-------
 
